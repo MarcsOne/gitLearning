@@ -106,12 +106,19 @@ void outputTotext() {
 	ocout << "\n";
 }
 																//打印输出到文件
+
 int main() {
 	int N;
-	printf("请输入您要生成的数独矩阵个数:\n");
-	scanf_s("%d", &N);
-	srand((unsigned)time(NULL));
 	ocout.open("data.txt");
+	printf("请输入您要生成的数独矩阵个数:\n");
+	int CharJduge = scanf_s("%d", &N);
+	if (!CharJduge) {
+		printf("输入只能为数字,请重新输入\n");
+		system("pause");
+		return 0;
+	}
+	srand((unsigned)time(NULL));
+	
 	ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
 	for (int i = 0; i<N; i++) {
 		generate(0, 0); 													//从0,0位置开始遍历生成随机数独矩阵 
