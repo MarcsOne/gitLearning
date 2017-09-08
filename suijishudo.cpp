@@ -89,8 +89,8 @@ void outputTocmd() {
 		}
 		printf("\n");
 	}
-	printf("-------------------------------");
 	printf("\n");
+	
 }
 //打印输出到屏幕
 void outputTotext() {
@@ -102,8 +102,8 @@ void outputTotext() {
 		}
 		ocout << "\n";
 	}
-	ocout << "-------------------------------";
 	ocout << "\n";
+	
 }
 //打印输出到文件
 
