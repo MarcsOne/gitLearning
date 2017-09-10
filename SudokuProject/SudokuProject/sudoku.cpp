@@ -54,18 +54,13 @@ bool IsS::IsSuitable(int row, int col) {
 bool Gen::generate(int row, int col) {
 	int nextrow, nextcol;
 	vector<int> number;
-	//if (row == 0 && col == 0) 
-	//	number.push_back((3 + 2) % 9 + 1);			//应作业要求，矩阵第一个位置固定为6 
-	//else
 		for (int i = 1; i <= 9; i++)
 			number.push_back(i);										//将1-9装入容器 
 	while (!number.empty()) {
-		int randindex = rand() % number.size();  				//随机产生1-9里的 1 个 数字num
-		int randnum = number[randindex];
+		int randindex = rand() % number.size();  				//随机产生1到(size-1)里的 1 个 数字randindex
 		number.erase(number.begin() + randindex);  				//删除索引位置的数据 
-		num[row][col] = randnum;  								//将数据填在第row行，第col列 
-		if (!IsSu.IsSuitable(row, col))
-			continue;  											//如果 randnum不能填在number[row][col]这个位置，则继续循环找一个合适的数 
+		num[row][col] = number[randindex];  					//将数据填在第row行，第col列 
+		if (!IsSu.IsSuitable(row, col))  continue;  //如果 randnum不能填在number[row][col]这个位置，则继续循环找一个合适的数 
 		if (row == SIZE - 1 && col == SIZE - 1) {
 			return true;
 		}  														//如果最右下角的空也填上了，返回ture，成功生成数独矩阵  
@@ -81,10 +76,8 @@ bool Gen::generate(int row, int col) {
 		if (next)  return true; 								 	//当返回ture时 矩阵成功生成
 	}
 	if (number.empty()) {
-		
 		return false;
-	} 															//生成的时候卡住了便回溯上一层 
-
+	} 															//生成的时候卡住了便回溯上一层
 }
 
 /*
@@ -115,11 +108,11 @@ void outputTotext() {
 
 int main() {
 
-	//clock_t start, finish;
+	clock_t start, finish;
 
-	//double totaltime;
+	double totaltime;
 
-	//start = clock();
+	start = clock();
 
 	int N;
 	ocout.open("sudotext.txt");
@@ -141,11 +134,11 @@ int main() {
 	}
 	ocout.close();
 
-	//finish = clock();
+	finish = clock();
 
-	//totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
+	totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
 
-	//cout << "\n此程序的运行时间为" << totaltime<<endl;
+	cout << "\n此程序的运行时间为" << totaltime<<endl;
 
 	system("pause");
 
