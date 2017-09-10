@@ -4,19 +4,22 @@
 #include<ctime>
 #include<vector>
 #include<fstream>
+#include"text.h"
 using namespace std;
+
 /*
-由于上一代码实践了将近1个下午，都没有成功，因此以下代码仅使用回溯法来生成随机数独矩阵
+修改了num[0][0]的赋值，只需在开始遍历时赋值，而不是在遍历的时候判断是否该位置为[0][0]，提高效率，减少运行时间
 */
+
 const int SIZE = 9;
 vector<vector <int> > num(SIZE, vector<int>(SIZE));
 int temp[SIZE];
-
+IsS IsSu;
+Gen Gene;
 ofstream ocout;//定义输出流的一个对象
 
 
-
-bool IsSuitable(int row, int col) {
+bool IsS::IsSuitable(int row, int col) {
 	int n = num[row][col];
 	for (int i = 0; i < row; i++) {
 		if (num[i][col] == n) return false;
@@ -47,19 +50,21 @@ bool IsSuitable(int row, int col) {
 	}  return true;
 }  																	//判别该数填在该位置是否合适 
 
-bool generate(int row, int col) {
+bool Gen::generate(int row, int col) {
 	int nextrow, nextcol;
+	int point = 0;
 	vector<int> number;
-	if (row == 0 && col == 0) number.push_back((3 + 2) % 9 + 1);			//应作业要求，矩阵第一个位置固定为6 
-	else
+	//if (row == 0 && col == 0) 
+	//	number.push_back((3 + 2) % 9 + 1);			//应作业要求，矩阵第一个位置固定为6 
+	//else
 		for (int i = 1; i <= 9; i++)
 			number.push_back(i);										//将1-9装入容器 
 	while (!number.empty()) {
-		int randindex = rand() % number.size();  				//随机产生1-9里的 1 个 数字 
-		int randnum = number[randindex];   						//将随机数作为number容器的一个索引指针，将索引位置的数据保存在randnum里
+		int randindex = rand() % number.size();  				//随机产生1-9里的 1 个 数字num
+		int randnum = number[randindex];
 		number.erase(number.begin() + randindex);  				//删除索引位置的数据 
 		num[row][col] = randnum;  								//将数据填在第row行，第col列 
-		if (!IsSuitable(row, col))
+		if (!IsSu.IsSuitable(row, col))
 			continue;  											//如果 randnum不能填在number[row][col]这个位置，则继续循环找一个合适的数 
 		if (row == SIZE - 1 && col == SIZE - 1) {
 			return true;
@@ -76,7 +81,7 @@ bool generate(int row, int col) {
 		if (next)  return true; 								 	//当返回ture时 矩阵成功生成
 	}
 	if (number.empty()) {
-		num[row][col] = 0;
+		
 		return false;
 	} 															//生成的时候卡住了便回溯上一层 
 
@@ -108,6 +113,13 @@ void outputTotext() {
 //打印输出到文件
 
 int main() {
+
+	clock_t start, finish;
+
+	double totaltime;
+
+	start = clock();
+
 	int N;
 	ocout.open("data.txt");
 	printf("请输入您要生成的数独矩阵个数:\n");
@@ -117,15 +129,24 @@ int main() {
 		system("pause");
 		return 0;
 	}
-	srand((unsigned)time(NULL));
+	//srand((unsigned)time(NULL));
 
 	ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
 	for (int i = 0; i<N; i++) {
-		generate(0, 0); 													//从0,0位置开始遍历生成随机数独矩阵 
+		num[0][0] = 6;
+		Gene.generate(0, 1); 													//从0,0位置开始遍历生成随机数独矩阵 
 		outputTotext();
 		outputTocmd();
 	}
 	ocout.close();
+
+	finish = clock();
+
+	totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
+
+	cout << "\n此程序的运行时间为" << totaltime<<endl;
+
 	system("pause");
+
 	return 0;
 }
