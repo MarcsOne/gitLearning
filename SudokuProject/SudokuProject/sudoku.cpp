@@ -28,25 +28,23 @@ bool IsS::IsSuitable(int row, int col) {
 	for (int i = 0; i < col; i++) {
 		if (num[row][i] == n) return false;
 	}  													//判断n是否已经存在所在行 
-	int RowStart = row / 3;
-	RowStart *= 3;
+	int RowStart = (row / 3) * 3;
 	int RowEnd = RowStart + 2;
-	int ColStart = col / 3;
-	ColStart *= 3;
+	int ColStart = (col / 3) * 3;
 	int ColEnd = ColStart + 2;
-	int i = RowStart, j = ColStart;  					//RowStart,RowEnd,ColStart,ColEnd标志该位置所在的九宫格的起始	
+	int r = RowStart, c = ColStart;  					//RowStart,RowEnd,ColStart,ColEnd标志该位置所在的九宫格的起始	
 
-	for (int k = 1; k <= 8; k++) {
-		if (row != i || col != j) {
-			if (num[i][j] == n) return false;
+	for (int k = 0; k < 9; k++) {
+		if (row != r || col != c) {
+			if (num[r][c] == n) return false;
 		}
-		else  break;                                    //判别所给数字是否与九宫格中的数字存在冲突 
-		if (j == ColEnd) {
-			j = ColStart;
-			i++;
+		else  return true;                                 //判别所给数字是否与九宫格中的数字存在冲突 
+		if (c == ColEnd) {
+			c = ColStart;
+			r++;
 		}
 		else {
-			j++;
+			c++;
 		}
 	}  return true;
 }  																	//判别该数填在该位置是否合适 
