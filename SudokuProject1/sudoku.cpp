@@ -123,7 +123,7 @@ int main() {
 	}
 	//srand((unsigned)time(NULL));
 
-	ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
+	//ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
 	for (int i = 0; i<N; i++) {
 		num[0][0] = 6;
 		Gene.generate(0, 1); 													//从0,0位置开始遍历生成随机数独矩阵 
