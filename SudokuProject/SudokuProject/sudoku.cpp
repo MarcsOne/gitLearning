@@ -106,15 +106,15 @@ void outputTotext() {
 
 int main() {
 
-	clock_t start, finish;
+	//clock_t start, finish;
 
-	double totaltime;
+	//double totaltime;
 
-	start = clock();
+	//start = clock();
 
 	int N;
 	ocout.open("sudotext.txt");
-	printf("请输入您要生成的数独矩阵个数:\n");
+	//printf("请输入您要生成的数独矩阵个数:\n");
 	int CharJduge = scanf_s("%d", &N);
 	if (!CharJduge) {
 		printf("输入只能为数字,请重新输入\n");
@@ -132,13 +132,13 @@ int main() {
 	}
 	ocout.close();
 
-	finish = clock();
+	//finish = clock();
 
-	totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
+	//totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
 
-	cout << "\n此程序的运行时间为" << totaltime<<endl;
+	//cout << "\n此程序的运行时间为" << totaltime<<endl;
 
-	system("pause");
+	//system("pause");
 
 	return 0;
 }
