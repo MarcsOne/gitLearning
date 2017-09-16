@@ -6,25 +6,25 @@
 #include<fstream>
 using namespace std;
 
-/*基本思想 
-利用回溯法构造数独模板，利用模板算法生成最终的数独矩阵 
+/*基本思想
+利用回溯法构造数独模板，利用模板算法生成最终的数独矩阵
 这种方法优点是速度快，但是缺点是当每个模板生成的数独矩阵过多，即GRAND过大，则很可能会产生重复。
-这里我GRAND取30，减少了回溯法使用的次数，提高了效率，计算为0.0744%，即如果要生成100万个数独，平均重复数独个数为744个。 
+这里我GRAND取30，减少了回溯法使用的次数，提高了效率，计算为0.0744%，即如果要生成100万个数独，平均重复数独个数为744个。
 修改了num[0][0]的赋值，只需在开始遍历时赋值，而不是在遍历的时候判断是否该位置为[0][0]，提高效率，减少运行时间
 */
 
 const int SIZE = 9;
 const int GRAND = 30;
 /*
-每次生成数独矩阵的规模为GRAND，当GRAND越大，生成数独矩阵的重复概率就越高： 
-							   当GRAND越小，生成数独矩阵的重复概率就越低。
-							   这里GRAND取30，经计算，重复概率为0.0744%，即如果要生成100万个数独，平均重复数独个数为744个。 
+每次生成数独矩阵的规模为GRAND，当GRAND越大，生成数独矩阵的重复概率就越高：
+当GRAND越小，生成数独矩阵的重复概率就越低。
+这里GRAND取30，经计算，重复概率为0.0744%，即如果要生成100万个数独，平均重复数独个数为744个。
 */
 vector<vector <int> > num(SIZE, vector<int>(SIZE));
 char model[9][9];
 int temp[9];
 int sum;
-int count = 0;
+
 
 //IsS IsSu;
 //Gen Gene;
@@ -68,8 +68,8 @@ bool generate(int row, int col) {
 	//if (row == 0 && col == 0) 
 	//	number.push_back((3 + 2) % 9 + 1);			//应作业要求，矩阵第一个位置固定为6 
 	//else
-		for (int i = 1; i <= 9; i++)
-			number.push_back(i);										//将1-9装入容器 
+	for (int i = 1; i <= 9; i++)
+		number.push_back(i);										//将1-9装入容器 
 	while (!number.empty()) {
 		int randindex = rand() % number.size();  				//随机产生1-9里的 1 个 数字num
 		int randnum = number[randindex];
@@ -92,7 +92,7 @@ bool generate(int row, int col) {
 		if (next)  return true; 								 	//当返回ture时 矩阵成功生成
 	}
 	if (number.empty()) {
-		
+
 		return false;
 	} 															//生成的时候卡住了便回溯上一层 
 
@@ -124,14 +124,14 @@ void init()
 }
 /*
 void outputTocmd() {
-	for (int i = 0; i < SIZE; i++) {
-		for (int j = 0; j < SIZE; j++) {
-			printf(" %d", num[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-	
+for (int i = 0; i < SIZE; i++) {
+for (int j = 0; j < SIZE; j++) {
+printf(" %d", num[i][j]);
+}
+printf("\n");
+}
+printf("\n");
+
 }*/
 //打印输出到屏幕
 void outputTotext() {
@@ -144,7 +144,7 @@ void outputTotext() {
 		ocout << "\n";
 	}
 	ocout << "\n";
-	
+
 }
 //打印输出到文件
 void finalgenerator()
@@ -165,60 +165,72 @@ void finalgenerator()
 		}
 	}
 }
-int main() {
-
+int main(int agrc,char* agrv[]) {
+	int CharJduge;
 	//clock_t start, finish;
 
 	//double totaltime;
 
 	//start = clock();
-
-	int N;
-	ocout.open("sudoku.txt");
-	//printf("请输入您要生成的数独矩阵个数:\n");
-	int CharJduge = scanf("%d", &N);
-	if (!CharJduge) {
-		printf("输入只能为数字,请重新输入\n");
-		//system("pause");
+	if (agrc != 3) {
+		printf("参数个数不正确，请重新输入\n");
 		return 0;
 	}
-	//srand((unsigned)time(NULL));
-	sum = N ;
-	//ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
+	if (agrc == 3) {
+		CharJduge = atoi(agrv[2]);
+		if (CharJduge == 0) {
+			printf("输入只能为数字,请重新输入!\n");
+			return 0;
+		}
+		else {
+//			int N;
+			ocout.open("sudoku.txt");
+			//printf("请输入您要生成的数独矩阵个数:\n");
+			//int CharJduge = scanf_s("%d", &N);
+			//if (!CharJduge) {
+			//	printf("输入只能为数字,请重新输入\n");
+				//system("pause");
+		//		return 0;
+		//	}
+			//srand((unsigned)time(NULL));
+			sum = CharJduge;
+			//ocout << "您请求的生成的" << N << "个随机数独矩阵如下:" << endl;
+			int count = 0;
+			for (int i = 0; i < CharJduge / GRAND + 1; i++) {
+				num[0][0] = 6;
+				generate(0, 1); 													//从0,0位置开始遍历生成随机数独矩阵 
+																					//outputTotext();
+				for (int x = 0; x < 9; x++) {
+					for (int y = 0; y < 9; y++) {
+						if (num[x][y] == 6) model[x][y] = 'i';
+						else if (num[x][y] == 1) model[x][y] = 'a';
+						else if (num[x][y] == 2) model[x][y] = 'b';
+						else if (num[x][y] == 3) model[x][y] = 'c';
+						else if (num[x][y] == 4) model[x][y] = 'd';
+						else if (num[x][y] == 5) model[x][y] = 'e';
+						else if (num[x][y] == 7) model[x][y] = 'f';
+						else if (num[x][y] == 8) model[x][y] = 'g';
+						else if (num[x][y] == 9) model[x][y] = 'h';
 
-	for (int i = 0; i< N/GRAND + 1; i++) {
-		num[0][0] = 6;
-		generate(0, 1); 													//从0,0位置开始遍历生成随机数独矩阵 
-		//outputTotext();
-		for(int x = 0;x<9;x++){
-			for (int y=0;y<9;y++){
-				if(num[x][y]==6) model[x][y]='i';
-				else if (num[x][y]==1) model[x][y] = 'a';
-				else if (num[x][y]==2) model[x][y] = 'b';
-				else if (num[x][y]==3) model[x][y] = 'c';
-				else if (num[x][y]==4) model[x][y] = 'd';
-				else if (num[x][y]==5) model[x][y] = 'e';
-				else if (num[x][y]==7) model[x][y] = 'f';
-				else if (num[x][y]==8) model[x][y] = 'g';
-				else if (num[x][y]==9) model[x][y] = 'h';
-				
+					}
+				}
+				if (sum >= GRAND) {
+					count = GRAND;
+					sum = sum - GRAND;
+				}
+				else {
+					count = sum;
+					sum = 0;
+				}
+				for (int z = 0; z < count; z++)
+				{
+					init();
+					finalgenerator();
+					outputTotext();
+				}
+				//	outputTocmd();
 			}
 		}
-		if(sum>=GRAND) {
-			 count = GRAND;
-			 sum = sum-GRAND;
-		}
-		else   {
-			count = sum; 
-			sum = 0;
-		}
- 		for(int z=0;z< count ;z++)
-		{
-			init();
-			finalgenerator();
-			outputTotext();
-		}
-	//	outputTocmd();
 	}
 	ocout.close();
 
